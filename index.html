@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html>
+<style>
+body {font-family: Arial, Helvetica, sans-serif;}
+* {box-sizing: border-box;}
+
+/* Full-width input fields */
+input[type=text], input[type=number],#type {
+  width: 100%;
+  padding: 15px;
+  margin: 5px 0 22px 0;
+  display: inline-block;
+  border: none;
+  background: #f1f1f1;
+}
+
+/* Add a background color when the inputs get focus */
+input[type=text]:focus, input[type=number]:focus {
+  background-color: #ddd;
+  outline: none;
+}
+
+/* Set a style for all buttons */
+button {
+  background-color: #04AA6D;
+  color: white;
+  padding: 14px 20px;
+  margin: 8px 0;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+  opacity: 0.9;
+}
+
+button:hover {
+  opacity:1;
+}
+
+/* Extra styles for the cancel button */
+.cancelbtn {
+  padding: 14px 20px;
+  background-color: #f44336;
+}
+
+/* Float cancel and signup buttons and add an equal width */
+.cancelbtn, .signupbtn {
+  float: left;
+  width: 50%;
+}
+
+/* Add padding to container elements */
+.container {
+  padding: 16px;
+}
+
+/* The Modal (background) */
+.modal {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: #474e5d;
+  padding-top: 50px;
+}
+
+/* Modal Content/Box */
+.modal-content {
+  background-color: #fefefe;
+  margin: 5% auto 15% auto; /* 5% from the top, 15% from the bottom and centered */
+  border: 1px solid #888;
+  width: 80%; /* Could be more or less, depending on screen size */
+}
+
+/* Style the horizontal ruler */
+hr {
+  border: 1px solid #f1f1f1;
+  margin-bottom: 25px;
+}
+ 
+/* The Close Button (x) */
+.close {
+  position: absolute;
+  right: 35px;
+  top: 15px;
+  font-size: 40px;
+  font-weight: bold;
+  color: #f1f1f1;
+}
+
+.close:hover,
+.close:focus {
+  color: #f44336;
+  cursor: pointer;
+}
+
+/* Clear floats */
+.clearfix::after {
+  content: "";
+  clear: both;
+  display: table;
+}
+
+/* Change styles for cancel button and signup button on extra small screens */
+@media screen and (max-width: 300px) {
+  .cancelbtn, .signupbtn {
+     width: 100%;
+  }
+}
+</style>
+<body>
+  <form class="modal-content" action="/action_page.php">
+    <div class="container">
+      <h1>Bearing Capacity of Footing</h1>
+      <p>Please enter the details to proceed.</p>
+      <hr>
+      <label for="width" ><b>Type Of Footing</b></label>
+                <select name="type" id="type" onchange="getOption()">
+                  
+                  <option value="square">Square Footing</option>
+                  <option value="circular">Circular Footing</option>
+                  <option value="rectangle">Rectangle  Footing</option>
+                </select>
+      <div id="bre"></div>          
+      <label for="width"><b>Width of Footing (m)</b></label>
+      <input type="number" placeholder="Enter Width" name="width" id="width" required>
+
+      <label for="Depth"><b>Depth of foooting(m)</b></label>
+      <input type="number" placeholder="Enter depth" name="depth" id="depth" required>
+
+      <label for="unit_wt"><b>Unit weight of soil(kN/m³)</b></label>
+      <input type="number" placeholder="Enter Unit Weight of Soil" name="unit_wt" id="unit_wt" required>
+
+      <label for="anlge"><b>Angle of Friction(°) </b></label>
+      <input type="number" placeholder="Enter angle of friction" name="angle" id="angle" required>
+
+      <label for="cohesion"><b>Value of Cohesion(kN/m2)</b></label>
+      <input type="number" placeholder="Enter cohesion" name="cohesion" id="cohesion" required>
+      <label for="water"><b>Value of Water(m)</b></label>
+      <input type="number" placeholder="Enter Water Table Distanace from Surface" name="water" id="water" required>
+      <div class="clearfix">
+       
+        <button type="button" onclick="result()">Calculate </button>
+      </div>
+    </div>
+  </form>
+<div id="id01" class="modal">
+  <span onclick="document.getElementById('id01').style.display='none'" class="close" title="Close Modal">&times;</span>
+  <form class="modal-content">
+    <div class="container">
+      <h1>Results</h1>
+      <p>According to Terzaghi Bearing Capacity Theory</p>
+      <hr>
+      <div id="result">
+        </div>
+
+     
+      <div class="clearfix">
+        <button type="button" onclick="document.getElementById('id01').style.display='none'" class="cancelbtn">Cancel</button>
+      </div>
+    </div>
+  </form>
+</div>
+
+<script>
+// Get the modal
+var modal = document.getElementById('id01');
+
+// When the user clicks anywhere outside of the modal, close it
+window.onclick = function(event) {
+  if (event.target == modal) {
+    modal.style.display = "none";
+  }
+}
+
+function getOption(){
+  var type=document.getElementById('type').value;
+console.log(type)
+console.log("jbjhbjh")
+    if (type == 'rectangle'){
+        var div = document.createElement('div');
+                div.setAttribute('class', 'post block bc2');
+                div.innerHTML = `  	
+                <label for="width"><b>Breadth of Footing in m</b></label>
+        <input type="number" placeholder="Enter Width" name="width" id="breadth" required>
+          `;
+        document.getElementById('bre').appendChild(div);
+        console.log("ok done")
+      }
+}
+function result(){
+  document.getElementById('type').addEventListener('change',getOption);
+  var type=document.getElementById('type').value;
+    var width=document.getElementById('width').value;
+    var depth=document.getElementById('depth').value;
+    var unit_wt=document.getElementById('unit_wt').value;
+    var angle=document.getElementById('angle').value;
+    var cohesion=document.getElementById('cohesion').value;
+    var length = document.getElementById('breadth').value;
+    var water=document.getElementById('water').value
+
+
+    var Nc,Nq,Nr,Rw1=1,Rw2=1
+    console.log(angle)
+    if(angle == 0){
+        Nc=5.7;
+        Nq=1.0;
+        Nr=0.0;
+    }
+    else if(angle<=5) {
+      Nc=7.3;
+        Nq=1.6;
+        Nr=1.3;
+    }
+    else if(angle<=10) {
+      Nc=9.6;
+        Nq=2.7;
+        Nr=1.2;
+    }
+    else if(angle<=15) {
+      Nc=12.9;
+        Nq=4.4;
+        Nr=2.5;
+    }
+    else if(angle<=20) {
+      Nc=17.7;
+        Nq=7.4;
+        Nr=5.0;
+    }
+    else if(angle<=25) {
+      Nc=25.1;
+        Nq=12.7;
+        Nr=9.7;
+    }
+    else if(angle<=30) {
+      Nc=37.2;
+        Nq=22.5;
+        Nr=19.7;
+    }
+    else if(angle<=35) {
+      Nc=57.8;
+        Nq=41.4;
+        Nr=42.4;
+    }
+    else if(35<angle<=40) {
+      Nc=95.1;
+        Nq=81.3;
+        Nr=100.4;
+    }
+    else if(angle<=45) {
+      Nc=172.3;
+        Nq=173.3;
+        Nr=297.5;
+    }  else
+    {
+      Nc=347.5;
+        Nq=415.1;
+        Nr=1153.2;
+    }
+
+    var mode="General Sher Failure Mode"
+    if (width == "" || depth =="" || unit_wt=="" || angle==''|| cohesion==" " ) {
+    alert("Width,Depth,unit_wt,angle,cohesion must be filled out");}
+    else{
+    document.getElementById('id01').style.display='block'
+    var qu;
+    if(angle <=28){
+      cohesion=(2/3)*cohesion
+      radians = angle * Math.PI/180
+      angle=Math.atan((2/3)*Math.tan(radians))*180/Math.PI
+      mode="Local Sher Failure Mode"
+    }
+
+
+   if( 0<=water<= depth){
+    Rw1=1
+    Rw2=0.5*(1+water/width)
+
+   }
+   else if(water<=(width+depth)){
+    Rw1=1
+    Rw2=0.5*(1+water/width)
+   }
+   else{
+    Rw1=1
+    Rw2=1
+   }
+
+    if(type=='square'){
+      qu=1.2*cohesion*Nc+unit_wt*depth*Nq*Rw1+0.4*unit_wt*width*Nr*Rw2;
+    }else if(type=="rectangle"){
+      qu=cohesion*Nc*(1-0.2*width/length)+unit_wt*depth*Nq*Rw1+0.5*unit_wt*width*Nr*(1-0.2*width/length)*Rw2;
+    }else{
+      qu=1.2*cohesion*Nc+unit_wt*depth*Nq*Rw1+0.3*unit_wt*width*Nr*Rw2;
+    }
+
+    var div = document.createElement('div');
+              div.setAttribute('class', 'post block bc2');
+              div.innerHTML = `
+                Give that:-<br>
+                     cohesion=${cohesion}<br>
+                     angle of friction=${angle}<br>
+                     width of footing=${width}<br>
+                     depth of footing=${depth}  <br>	
+                     mode =${mode}<br>
+										   Hence from terzaghi equation ultimate bearing capacity=<br>
+                          qu=${cohesion}X${Nc}+${unit_wt}X${depth}X${Nq}+0.5 X ${unit_wt}X${width}X${Nr}<br>
+                            qu =${qu}kN/m2
+
+                       `;
+       document.getElementById('result').appendChild(div);
+
+    }
+
+}
+
+</script>
+
+</body>
+</html>
+
